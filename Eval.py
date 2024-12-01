@@ -1,7 +1,6 @@
 import os
 import sys
 import traceback
-from inspect import getfullargspec
 from io import StringIO
 from time import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -17,12 +16,13 @@ BOT_TOKEN = "7581811310:AAHBZygnB1fO7WO79n_EJOrVTEcRXnL3Qh0"
 OWNER_ID = [6882559224]
 
 
-async def aexec(code, update: Update, context: CallbackContext):
-    exec(
-        "async def __aexec(update, context): "
-        + "".join(f"\n {line}" for line in code.split("\n"))
-    )
-    return await locals()["__aexec"](update, context)
+async def aexec(code: str, update: Update, context: CallbackContext):
+    local_vars = {}
+    try:
+        exec(f"async def __aexec(update, context):\n {code}", {}, local_vars)
+        return await local_vars["__aexec"](update, context)
+    except Exception as e:
+        return str(e)
 
 
 async def start(update: Update, context: CallbackContext):
@@ -69,12 +69,13 @@ async def eval_command(update: Update, context: CallbackContext):
     stdout, stderr, exc = None, None, None
 
     try:
-        await aexec(code, update, context)
-    except Exception:
+        result = await aexec(code, update, context)
+        stdout = result
+    except Exception as e:
         exc = traceback.format_exc()
 
     sys.stdout, sys.stderr = old_stdout, old_stderr
-    stdout, stderr = redirected_output.getvalue(), redirected_error.getvalue()
+    stderr = redirected_error.getvalue()
 
     evaluation = "💡 *Result:*\n"
     if exc:
