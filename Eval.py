@@ -12,7 +12,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = "7735047307:AAH6n-i_9a5GlGKmhUkQP1Khj47Fq04piLU"
+BOT_TOKEN = "7735047307:AAExvGKFQnl_nl2WmET97yL0dexeWeTSPhQ"
 OWNER_ID = [6656608288,6025837905]
 
 
