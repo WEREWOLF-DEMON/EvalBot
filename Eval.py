@@ -12,8 +12,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = "7581811310:AAHBZygnB1fO7WO79n_EJOrVTEcRXnL3Qh0"
-OWNER_ID = [6882559224]
+BOT_TOKEN = "7735047307:AAH6n-i_9a5GlGKmhUkQP1Khj47Fq04piLU"
+OWNER_ID = [6656608288]
 
 
 async def aexec(code: str, update: Update, context: CallbackContext):
